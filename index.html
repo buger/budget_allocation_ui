@@ -10,25 +10,43 @@
     </head>
     <body>
         <div id="content">
-            <div id="bars"></div>                
-            <a href="#" id="add_fruit">Add fruit</a>
+            <h2>Relative</h2>
+            <div id="relative_bars"></div>                
+            <a href="javascript:;" id="add_fruit_relative">Add fruit</a>
+
+            <h2 style="margin-top: 100px;">Standard</h2>
+            <div id="bars"></div>                            
+            <a href="javascript:;" id="add_fruit">Add fruit</a>
         </div>
 
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
         <script src="application.js"></script>
 
         <script>
-            var ui = new UIWeightElement("bars");
-            ui.addBar('Cherries', 100);
-            ui.addBar('Apples', 50);
-            ui.addBar('Grapes', 30);
+            var r = new UIWeightElement("relative_bars", "relative")
+                        .addBar('Cherries', 100)
+                        .addBar('Apples', 50)
+                        .addBar('Grapes', 30);
+
+            $('#add_fruit_relative').bind('click', function(){
+                var fruit;
+                if (fruit = prompt('Enter fruit name')) {
+                    r.addBar(fruit, 10);
+                }
+            });
+
+            var t = new UIWeightElement("bars", "totals")
+                        .addBar('Cherries', 60)
+                        .addBar('Apples', 40)
+                        .addBar('Grapes', 30);
 
             $('#add_fruit').bind('click', function(){
                 var fruit;
                 if (fruit = prompt('Enter fruit name')) {
-                    ui.addBar(fruit, 10);
+                    t.addBar(fruit, 10);
                 }
             });
+
         </script>
     </body>
 </html>

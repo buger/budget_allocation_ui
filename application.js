@@ -1,4 +1,5 @@
-var UIWeightElement = function(dom_id){    
+var UIWeightElement = function(dom_id, type){    
+    this.type = type || "totals"
     this.dom_container = $('#'+dom_id);
     this.bars = [];    
     this.max_value = 100;
@@ -10,10 +11,21 @@ var UIWeightElement = function(dom_id){
     
     this.container = $("<div />", {
         className: "ui-weight-container"
-    });    
+    }); 
+    
+    if (this.type === "totals") {
+        this.warning = $("<div class='warning'>Over Budget - Reduce Points</div>").appendTo(this.container).hide();        
+        this.total_container = $("<div class='totals'>"+        
+                                    "<span class='label'>Total</span>"+
+                                    "<span class='bar'><span class='text'></span><span class='overflow'></span></span>"+
+                                "</div>").appendTo(this.container);
+    }
+
     this.bars_container = $("<ul />").appendTo(this.container);
 
     this.container.appendTo(this.dom_container);
+
+    return this;
 }
 
 UIWeightElement.currently_resizing_bar = null;
@@ -35,6 +47,8 @@ UIWeightElement.prototype.addBar = function(name, value, options) {
       .appendTo(this.bars_container);
 
     this.updateBars();
+    
+    return this;
 }
 
 UIWeightElement.prototype.updateBars = function(animate){
@@ -42,7 +56,7 @@ UIWeightElement.prototype.updateBars = function(animate){
         animate = true;
     }
 
-    var i, width, last_width, total;
+    var i, width, last_width, total, self = this;
     var bars = this.bars_container.find('li .bar');
     var labels = this.bars_container.find('li .label');
 
@@ -54,7 +68,6 @@ UIWeightElement.prototype.updateBars = function(animate){
         var value = $(b).data('value');
 
         if (last_width = $(b).data('last_width')) {            
-            console.log($(b).width()/last_width, value)
             value = ($(b).width()/last_width)*value;  
             
             $(b).data('value', value).data('last_width', $(b).width());
@@ -69,17 +82,48 @@ UIWeightElement.prototype.updateBars = function(animate){
     bars.each(function() {
         var value = $(this).data('value');
 
-        width = value/max_value*container_width;
+        if (self.type === "relative") {
+            width = value/max_value*container_width;
+        } else {
+            width = value/100*container_width;
+        }
         
         if (animate) {
             $(this).animate({ width: width })
                 .css({ left: max_label_width });
         }
 
-        var percent = Math.round(value/total*100);
-
-        $(this).html(percent+'%');
+        if (self.type === "relative") {
+            var percent = Math.round(value/total*100);
+            $(this).html(percent+'%');
+        } else {
+            $(this).html(Math.round(value));
+        }
     });
+
+    if (self.type === "totals") {
+        var totals = this.total_container.find('.bar');
+        totals.css({
+            width: total/100*container_width,
+            left: max_label_width
+        });
+        
+        var overflow_width = (total-100)/100 * container_width;
+        if (overflow_width < 0)
+            overflow_width = 0;
+
+        totals.find('.overflow').css({
+            width: overflow_width
+        })
+
+        totals.find('.text').html(Math.round(total));
+
+        if (total > 100) {
+            this.warning.show();
+        } else {
+            this.warning.hide();
+        }
+    }
 }
 
 $(function(){
