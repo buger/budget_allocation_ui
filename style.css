@@ -1,0 +1,35 @@
+#content {
+    margin: 0 auto;
+    width: 600px;
+    padding: 50px;
+
+    border: 1px solid #eee;
+
+    margin-top: 10%;
+}
+
+.ui-weight-container li {
+    font-size: 150%;
+    position: relative;
+    margin-bottom: 10px;
+}
+
+.ui-weight-container .bar {
+    position: absolute;
+    height: 20px;
+    left: 100px;
+    top: 4px;
+    background: #ccc;    
+    border-radius: 5px;
+    border: 1px solid #bbb;
+    cursor: col-resize;
+    text-align: left;
+    font-size: 76%;
+    color: #333;
+    line-height: 20px;
+    padding-left: 5px;
+}
+
+.ui-weight-container .label {
+    padding-right: 10px;
+}
