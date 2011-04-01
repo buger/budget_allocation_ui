@@ -81,9 +81,12 @@ UIWeightElement.prototype.updateBars = function(animate){
 
     bars.each(function() {
         var value = $(this).data('value');
+        $(this).data('max_width', container_width);
 
         if (self.type === "relative") {
             width = value/max_value*container_width;
+        } else if (self.type === "relative2") {
+            width = value/100*container_width;
         } else {
             width = value/100*container_width;
         }
@@ -93,7 +96,7 @@ UIWeightElement.prototype.updateBars = function(animate){
                 .css({ left: max_label_width });
         }
 
-        if (self.type === "relative") {
+        if (self.type === "relative" || self.type === "relative2") {
             var percent = Math.round(value/total*100);
             $(this).html(percent+'%');
         } else {
@@ -133,10 +136,16 @@ $(function(){
             var x = evt.clientX;
             window.old_mouse_x = window.old_mouse_x || x;
 
-            var offset = (x-old_mouse_x)
+            var offset = (x-old_mouse_x);
+            var width = $(bar).width()+offset;
+            var max_width = $(bar).data('max_width');
+
+            if (max_width && width > max_width) {                
+                width = max_width;
+            }            
             
             $(bar).css({
-                width: ($(bar).width()+offset)+'px'
+                width: width+'px'
             });
 
             window.old_mouse_x = x;

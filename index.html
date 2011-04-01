@@ -14,6 +14,10 @@
             <div id="relative_bars"></div>                
             <a href="javascript:;" id="add_fruit_relative">Add fruit</a>
 
+            <h2 style="margin-top: 100px;">Relative (V2)</h2>
+            <div id="relative_bars_2"></div>                
+            <a href="javascript:;" id="add_fruit_relative_2">Add fruit</a>
+
             <h2 style="margin-top: 100px;">Standard</h2>
             <div id="bars"></div>                            
             <a href="javascript:;" id="add_fruit">Add fruit</a>
@@ -39,6 +43,19 @@
                     r.addBar(fruit, 10);
                 }
             });
+
+            var r2 = new UIWeightElement("relative_bars_2", "relative2")
+                        .addBar('Cherries', 100)
+                        .addBar('Apples', 50)
+                        .addBar('Grapes', 30);
+
+            $('#add_fruit_relative_2').bind('click', function(){
+                var fruit;
+                if (fruit = prompt('Enter fruit name')) {
+                    r2.addBar(fruit, 10);
+                }
+            });
+
 
             var t = new UIWeightElement("bars", "totals")
                         .addBar('Cherries', 60)
