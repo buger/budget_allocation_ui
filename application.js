@@ -89,6 +89,8 @@ UIWeightElement.prototype.updateBars = function(animate){
             width = value/max_value*container_width;
         } else if (self.type === "relative2") {
             width = value/100*container_width;
+        } else if (self.type === "relative3") {
+            width = value/total*container_width;
         } else {
             width = value/100*container_width;
         }
@@ -98,7 +100,7 @@ UIWeightElement.prototype.updateBars = function(animate){
                 .css({ left: max_label_width });
         }
 
-        if (self.type === "relative" || self.type === "relative2") {
+        if (self.type === "relative" || self.type === "relative2" || self.type === "relative3") {
             var percent = Math.round(value/total*100);
             $(this).html(percent+'%');
         } else {
