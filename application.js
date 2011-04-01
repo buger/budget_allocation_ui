@@ -81,7 +81,9 @@ UIWeightElement.prototype.updateBars = function(animate){
 
     bars.each(function() {
         var value = $(this).data('value');
-        $(this).data('max_width', container_width);
+
+        if (self.type === "relative2")
+            $(this).data('max_width', container_width);
 
         if (self.type === "relative") {
             width = value/max_value*container_width;
