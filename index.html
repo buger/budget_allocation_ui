@@ -6,21 +6,26 @@
         <link rel="stylesheet" href="http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css">
         <link rel="stylesheet" href="http://yui.yahooapis.com/3.3.0/build/cssfonts/fonts-min.css">
 
+        <link rel="stylesheet" href="css/jquery-ui/jquery.ui.autocomplete.custom.css" />
         <link rel="stylesheet" href="style.css"/>
     </head>
     <body>
         <div id="content">
-            <h2>Relative</h2>
+            <h2>Relative (V3)</h2>
+            <div id="relative_bars_3"></div>                
+            <a href="javascript:;" id="add_fruit_relative_3">Add fruit</a>
+
+            <h2 style="margin-top: 100px;">Relative (V4)</h2>
+            <div id="relative_bars_4"></div>                
+            <a href="javascript:;" id="add_fruit_relative_4">Add fruit</a>
+
+            <h2 style="margin-top: 100px;">Relative</h2>
             <div id="relative_bars"></div>                
             <a href="javascript:;" id="add_fruit_relative">Add fruit</a>
 
             <h2 style="margin-top: 100px;">Relative (V2)</h2>
             <div id="relative_bars_2"></div>                
             <a href="javascript:;" id="add_fruit_relative_2">Add fruit</a>
-
-            <h2 style="margin-top: 100px;">Relative (V3)</h2>
-            <div id="relative_bars_3"></div>                
-            <a href="javascript:;" id="add_fruit_relative_3">Add fruit</a>
 
             <h2 style="margin-top: 100px;">Standard</h2>
             <div id="bars"></div>                            
@@ -31,9 +36,13 @@
             </div>
         </div>
         
-
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
-        <script src="application.js"></script>
+        <script src="js/jquery-ui/jquery-ui.core-and-interactions.min.js"></script>
+        <script src="js/jquery-ui/jquery-ui.autocomplete.min.js"></script>
+        <script src="js/autogrow.js"></script>
+        <script src="js/store.min.js"></script>
+        <script src="js/skills.js"></script>
+        <script src="js/application.js?2"></script>
 
         <script>
             var r = new UIWeightElement("relative_bars", "relative")
@@ -66,11 +75,28 @@
                         .addBar('Grapes', 30);
 
             $('#add_fruit_relative_3').bind('click', function(){
+                var widget = r3.addBar("", 10);                
+                var label = widget.container.find('.label:last');
+
+                setTimeout(function(){
+                    UIWeightElement.editLabel(label);
+                    label.click();
+                });
+            });
+
+            var r4 = new UIWeightElement("relative_bars_4", "relative4")
+                        .addBar('Cherries', 100)
+                        .addBar('Apples', 50)
+                        .addBar('Grapes', 30);
+
+            $('#add_fruit_relative_4').bind('click', function(){
                 var fruit;
                 if (fruit = prompt('Enter fruit name')) {
-                    r3.addBar(fruit, 10);
+                    r4.addBar(fruit, 10);
                 }
             });
+
+
 
             var t = new UIWeightElement("bars", "totals")
                         .addBar('Cherries', 60)
