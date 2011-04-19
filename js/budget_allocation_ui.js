@@ -60,7 +60,11 @@
         });
 
         this.total_sum += value;
-        this.updateBars();
+
+        clearTimeout(this.update_timer);
+        this.update_timer = setTimeout(function(){
+            self.updateBars();    
+        });
         
         return this;
     }

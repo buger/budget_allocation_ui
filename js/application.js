@@ -91,33 +91,45 @@ $(function(){
 
 $('input, textarea').placeholder();
 
-$('.buttons input[type=submit]').live('click', function(){
-    var comment = $('textarea').val();
-    
+$('.buttons input[type=submit]').live('click', function(){    
     var button = $(this);
 
     button.attr('disabled', true);
     button.val("Saving...");
 
+    setTimeout(save_form, 1000);
+});
+
+function save_form() {
+    var comment = $('textarea').val();
+    var button = $('input[type=submit]');
+
+    if (!store.get("user_id")) {
+        window.user_id = +new Date();
+        store.set("user_id", user_id);
+    }
+
+    var last_save = +new Date();
+    store.set("last_save", last_save);
+
     var data = {
+        user_id: window.user_id,
         comment: comment,        
         skills: widget.getJSON()
     }
 
-    setTimeout(function(){
-        $.ajax({
-            dataType: "jsonp",
-            type: "POST",
-            url: "http://foobar-utils.appspot.com/json/set/" + user_id,
-            data: {
-                namespace: "budget_allocation_ui",
-                json: JSON.stringify(data)
-            },
-            complete: function(){
-                button.removeAttr('disabled');
-                button.val("Save");
-                $('textarea').val('');
-            }
-        });
+    $.ajax({
+        dataType: "jsonp",
+        type: "POST",
+        url: "http://foobar-utils.appspot.com/json/set/" + last_save,
+        data: {
+            namespace: "budget_allocation_ui",
+            json: JSON.stringify(data)
+        },
+        complete: function(){
+            button.removeAttr('disabled');
+            button.val("Save");
+            $('textarea').val('');
+        }
     });
-});
+}

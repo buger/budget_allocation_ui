@@ -13,19 +13,10 @@
     <body>
         <div id="content"> 
             <div class="description">
-                <h1>Manage your skills</h1>
-                <p>Description</p>
+                <h1>Skill results</h1>
+                <p>Latest changes</p>
             </div>
-
-            <h2 style="margin-top: 5px;">Your skills</h2>
-            <div id="relative4_container"></div>                
-            <a href="javascript:;" id="add_skill_relative4">Add skill</a>
-            
-            <textarea placeholder="Your comments here"></textarea>
-
-            <div class="buttons">
-                <input type="submit" value="Save" />
-            </div>
+            <div id="results">Loading...</div>
         </div>
         
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
@@ -33,46 +24,40 @@
         <script src="js/jquery-ui/jquery-ui.autocomplete.min.js"></script>
         <script src="js/jquery.placeholder.min.js"></script>
         <script src="js/budget_allocation_ui.js"></script>
-        <script src="js/store.min.js"></script>
         <script src="js/skills.js"></script>
         <script src="js/application.js?2"></script>
 
         <script>
-            var widget = new BudgetAllocationUI("relative4_container", "relative4");
-            
-            $('#add_skill_relative4').bind('click', function(){
-                widget.addBar("", 10);
-                var label = widget.container.find('.label:last');
+            function updateResults(user_id) {
+                $.getJSON("http://foobar-utils.appspot.com/json/get?callback=?",
+                    { namespace: "budget_allocation_ui", limit: 500},           
+                    function(results) {                    
+                        var container = $('#results').html('');
+                        var html = "";
+                        
+                        for(var i=results.length-1; i>=0; i--) {
+                            console.log(results[i])
+                            html += "<li>";
+                            html += "<span class='user'><label>User:</label>"+results[i].user_id+"</span>";
+                            skills = [];
+                            for(var j=0; j<results[i].skills.length; j++){
+                                skill = results[i].skills[j];
 
-                setTimeout(function(){
-                    BudgetAllocationUI.editLabel(label);
-                    label.click();
-                });
-            });
+                                skills.push(skill.name + ": "+Math.floor(skill.value));
+                            }
+                            html += "</br><span class='skills'><label>Skills:</label>"+skills.join(", ")+"</span>";
 
-            function fillWithRandom() {
-                for (var j=0; j<Math.floor(Math.random()*4)+2; j++) {
-                    widget.addBar(skills[Math.floor(Math.random()*skills.length)], Math.floor(Math.random()*20+10));
-                }
-            }
-
-            var user_id = store.get("user_id");
-            if (user_id) {
-                $.getJSON("http://foobar-utils.appspot.com/json/get/"+store.get('last_save')+"?callback=?",
-                    {
-                        namespace: "budget_allocation_ui"
-                    },
-                    function(data){
-                        for (var i=0; i<data.skills.length; i++) {
-                            widget.addBar(data.skills[i].name, data.skills[i].value)
+                            if (results[i].comment) {
+                                html += "</br><span class='skills'><label>Comment:</label>"+results[i].comment+"</span>";
+                            }
+                            html += "</li>"
                         }
-                    }).error(function(){
-                        fillWithRandom();
+
+                        container.html("<ul>"+html+"</ul>");
                     });
-            } else {
-                fillWithRandom();
-                save_form();
             }
+            
+            updateResults();
         </script>
 
         <!-- Yandex.Metrika counter -->
