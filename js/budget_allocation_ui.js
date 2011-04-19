@@ -1,5 +1,5 @@
 (function(window, $, undefined ){
-    var UIWeightElement = function(dom_id, type){    
+    var BudgetAllocationUI = function(dom_id, type){    
         this.type = type || "totals"
         this.dom_container = $('#'+dom_id);
         this.bars = [];    
@@ -32,9 +32,9 @@
     }
 
 
-    UIWeightElement.currently_resizing_bar = null;
+    BudgetAllocationUI.currently_resizing_bar = null;
 
-    UIWeightElement.prototype.addBar = function(name, value, options) {
+    BudgetAllocationUI.prototype.addBar = function(name, value, options) {
         var self = this;
 
         var bar = 
@@ -52,7 +52,7 @@
         bar.find('.bar').bind('mousedown', function(){
           var bar = $(this);
           bar.data('last_width', bar.width());
-          UIWeightElement.currently_resizing_bar = this; 
+          BudgetAllocationUI.currently_resizing_bar = this; 
         });
 
         bar.find('.delete').bind('click', function(){        
@@ -65,13 +65,13 @@
         return this;
     }
 
-    UIWeightElement.prototype.deleteBar = function(bar) {
+    BudgetAllocationUI.prototype.deleteBar = function(bar) {
         this.total_sum -= bar.find('.bar').data('value');
         bar.remove();
         this.updateBars();
     }
 
-    UIWeightElement.prototype.updateBars = function(animate){
+    BudgetAllocationUI.prototype.updateBars = function(animate){
         if (animate === undefined) {
             animate = true;
         }
@@ -105,7 +105,7 @@
 
         for(i=0, total=0; i<values.length; total+=values[i++]);
 
-        var bar = UIWeightElement.currently_resizing_bar;
+        var bar = BudgetAllocationUI.currently_resizing_bar;
 
         if (self.type === "relative4" && total != self.total_sum) {
             var diff = total-self.total_sum;
@@ -152,7 +152,7 @@
             if (animate) {
                 $(this).animate({ width: width })
                     .css({ left: max_label_width });
-            } else if (self.type === "relative4" && this != UIWeightElement.currently_resizing_bar) {
+            } else if (self.type === "relative4" && this != BudgetAllocationUI.currently_resizing_bar) {
                 $(this).css({ width: width, left: max_label_width });
             }
 
@@ -193,5 +193,5 @@
         }
     }
 
-    window.UIWeightElement = UIWeightElement;
+    window.BudgetAllocationUI = BudgetAllocationUI;
 })(window, jQuery)

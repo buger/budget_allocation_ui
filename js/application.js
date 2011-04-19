@@ -6,7 +6,7 @@ for (var i=0; i<window.skills_dictionary.length; i++) {
 
 $(function(){    
     $(document).bind('mousemove', function(evt){
-        var bar = UIWeightElement.currently_resizing_bar;
+        var bar = BudgetAllocationUI.currently_resizing_bar;
         if (bar) {
             var x = evt.clientX;
             window.old_mouse_x = window.old_mouse_x || x;
@@ -32,19 +32,19 @@ $(function(){
         }
     });
     $(document).bind('mouseup', function() {
-        var bar = UIWeightElement.currently_resizing_bar;
+        var bar = BudgetAllocationUI.currently_resizing_bar;
         if (bar)
             $(bar).data('last_width','');            
             
             $(bar).closest(".ui-weight-container").trigger('ui_weight:updateBars', true);
 
-        UIWeightElement.currently_resizing_bar = null;
+        BudgetAllocationUI.currently_resizing_bar = null;
         window.old_mouse_x = null;
     });
 
     var current_editable_input;
     
-    UIWeightElement.editLabel = function(label){
+    BudgetAllocationUI.editLabel = function(label){
         if (!$(label).hasClass('edit')) {
             if (current_editable_input && current_editable_input.parentNode != label) {
                 var value = current_editable_input.value;
@@ -74,7 +74,7 @@ $(function(){
     }
 
     $('.ui-weight-container .label').live('click', function(){
-        UIWeightElement.editLabel(this);
+        BudgetAllocationUI.editLabel(this);
     });
     
     $(document).bind('click', function(evt) {
