@@ -88,3 +88,36 @@ $(function(){
     });
 });
 
+
+$('input, textarea').placeholder();
+
+$('.buttons input[type=submit]').live('click', function(){
+    var comment = $('textarea').val();
+    
+    var button = $(this);
+
+    button.attr('disabled', true);
+    button.val("Saving...");
+
+    var data = {
+        comment: comment,        
+        skills: widget.getJSON()
+    }
+
+    setTimeout(function(){
+        $.ajax({
+            dataType: "jsonp",
+            type: "POST",
+            url: "http://foobar-utils.appspot.com/json/set/" + user_id,
+            data: {
+                namespace: "budget_allocation_ui",
+                json: JSON.stringify(data)
+            },
+            complete: function(){
+                button.removeAttr('disabled');
+                button.val("Save");
+                $('textarea').val('');
+            }
+        });
+    });
+});

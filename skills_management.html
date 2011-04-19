@@ -1,0 +1,96 @@
+<!DOCTYPE HTML>
+<html>
+    <head>        
+        <title>Budget allocation interface</title>
+
+        <link rel="stylesheet" href="http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css">
+        <link rel="stylesheet" href="http://yui.yahooapis.com/3.3.0/build/cssfonts/fonts-min.css">
+
+        <link rel="stylesheet" href="css/jquery-ui/jquery.ui.autocomplete.custom.css" />
+        <link rel="stylesheet" href="css/budget_allocation_ui.css"/>
+        <link rel="stylesheet" href="css/style.css"/>
+    </head>
+    <body>
+        <div id="content"> 
+            <div class="description">
+                <h1>Manage your skills</h1>
+                <p>Description</p>
+            </div>
+
+            <h2 style="margin-top: 5px;">Your skills</h2>
+            <div id="relative4_container"></div>                
+            <a href="javascript:;" id="add_skill_relative4">Add skill</a>
+            
+            <textarea placeholder="Your comments here"></textarea>
+
+            <div class="buttons">
+                <input type="submit" value="Save" />
+            </div>
+        </div>
+        
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+        <script src="js/jquery-ui/jquery-ui.core-and-interactions.min.js"></script>
+        <script src="js/jquery-ui/jquery-ui.autocomplete.min.js"></script>
+        <script src="js/jquery.placeholder.min.js"></script>
+        <script src="js/budget_allocation_ui.js"></script>
+        <script src="js/store.min.js"></script>
+        <script src="js/skills.js"></script>
+        <script src="js/application.js?2"></script>
+
+        <script>
+            var widget = new BudgetAllocationUI("relative4_container", "relative4");
+            
+            $('#add_skill_relative4').bind('click', function(){
+                widget.addBar("", 10);
+                var label = widget.container.find('.label:last');
+
+                setTimeout(function(){
+                    BudgetAllocationUI.editLabel(label);
+                    label.click();
+                });
+            });
+
+
+            var user_id = store.get("user_id");
+            if (user_id) {
+                $.ajax({
+                    dataType: "jsonp",
+                    url: "http://foobar-utils.appspot.com/json/get/"+user_id,
+                    data: {
+                        namespace: "budget_allocation_ui"
+                    }
+                }).complete(function(data){
+                    data = JSON.parse(data);
+                    
+                    for (var i=0; i<data.skills; i++) {
+                        widget.addBar(data.skills[i].name, data.skills[i].value)
+                    }
+                })
+            } else {
+                user_id = +new Date();
+                store.set(user_id);
+
+                for (var j=0; j<Math.floor(Math.random()*4)+2; j++) {
+                    widget.addBar(skills[Math.floor(Math.random()*skills.length)], Math.floor(Math.random()*20+10));
+                }
+            }
+        </script>
+
+        <!-- Yandex.Metrika counter -->
+        <div style="display:none;"><script type="text/javascript">
+        (function(w, c) {
+            (w[c] = w[c] || []).push(function() {
+                try {
+                    w.yaCounter5546764 = new Ya.Metrika(5546764);
+                     yaCounter5546764.clickmap(true);
+                     yaCounter5546764.trackLinks(true);
+                
+                } catch(e) { }
+            });
+        })(window, 'yandex_metrika_callbacks');
+        </script></div>
+        <script src="//mc.yandex.ru/metrika/watch.js" type="text/javascript" defer="defer"></script>
+        <noscript><div><img src="//mc.yandex.ru/watch/5546764" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+        <!-- /Yandex.Metrika counter -->        
+    </body>
+</html>

@@ -192,6 +192,15 @@
             }
         }
     }
+    
+    BudgetAllocationUI.prototype.getJSON = function(){        
+        return $.map(this.container.find('li'), function(li) {
+            return {
+                name: $(li).find('.label').html(),
+                value: $(li).find('.bar').data('value')
+            }
+        });
+    }
 
     window.BudgetAllocationUI = BudgetAllocationUI;
 })(window, jQuery)
