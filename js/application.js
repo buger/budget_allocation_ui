@@ -98,6 +98,9 @@ $('.buttons input[type=submit]').live('click', function(){
     button.val("Saving...");
 
     setTimeout(save_form, 1000);
+    setTimeout(function(){
+        $('#notice').html("Your skills were saved").show().delay(1000).fadeOut(400);
+    }, 1000)
 });
 
 function save_form() {
@@ -121,7 +124,7 @@ function save_form() {
     $.ajax({
         dataType: "jsonp",
         type: "POST",
-        url: "http://foobar-utils.appspot.com/json/set/" + last_save,
+        url: "http://foobar-utils.appspot.com/json/set/" + last_save,        
         data: {
             namespace: "budget_allocation_ui",
             json: JSON.stringify(data)

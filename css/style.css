@@ -72,3 +72,10 @@ textarea:hover {
     width: 70px;
     font-size: 96%;
 }
+
+#notice {
+    color: green;
+    font-size: 167%;
+    padding: 20px 0;
+    padding-bottom: 0;
+}

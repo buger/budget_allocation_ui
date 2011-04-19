@@ -14,7 +14,8 @@
         <div id="content"> 
             <div class="description">
                 <h1>Manage your skills</h1>
-                <p>Description</p>
+                <p>Describe your skills using form below</p>
+                <div id="notice" style="display: none"></div>
             </div>
 
             <h2 style="margin-top: 5px;">Your skills</h2>
@@ -51,6 +52,8 @@
             });
 
             function fillWithRandom() {
+                $('#notice').html("Looks like it's your first visit. Your skills were filled automaticaly.").show().delay(2000).fadeOut(400);;
+
                 for (var j=0; j<Math.floor(Math.random()*4)+2; j++) {
                     widget.addBar(skills[Math.floor(Math.random()*skills.length)], Math.floor(Math.random()*20+10));
                 }
