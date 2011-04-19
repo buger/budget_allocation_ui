@@ -18,7 +18,7 @@
     left: 0px;
     top: 4px;
 
-    background: url(/css/delete.png) no-repeat;
+    background: url(./delete.png) no-repeat;
     cursor: pointer;
 }
 
