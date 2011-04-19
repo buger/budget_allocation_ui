@@ -3,7 +3,9 @@ Inspired by http://ux.stackexchange.com/questions/3736/how-to-build-a-budgeting-
 Example:
     <div id="widget_container"></div>    
     <script>
-        var widget = new BudgetAllocationUI("widget_container", "relative") // Available types: ["totals", "relative", "relative2", "relative3", "relative4"
+        // Available types: "totals", "relative", "relative2", "relative3", "relative4"        
+        var widget = new BudgetAllocationUI("widget_container", "relative");
+
         widget.addBar("Foo", 10);
         widget.addBar("Bar", 20);
     </script>
