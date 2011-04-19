@@ -1,0 +1,37 @@
+#content {
+    margin: 0 auto;
+    width: 800px;
+    padding: 30px;
+
+    border: 1px solid #eee;
+
+    margin-top: 20px;
+
+    color: #333;
+}
+
+h2 {
+    font-size: 167%;
+    font-weight: bold;
+    padding-bottom: 20px;
+}
+
+h1 {
+    font-size: 197%;
+    font-weight: bold;
+    padding-bottom: 10px;
+
+    color: #000;
+}
+
+.description {
+    margin-bottom: 40px;    
+}
+
+.description p {
+    font-size: 167%;
+}
+
+a {
+    color: #333;
+}

@@ -1,114 +1,78 @@
 <!DOCTYPE HTML>
 <html>
     <head>        
-        <title>Skill weight based interface</title>
+        <title>Budget allocation interface</title>
 
         <link rel="stylesheet" href="http://yui.yahooapis.com/3.3.0/build/cssreset/reset-min.css">
         <link rel="stylesheet" href="http://yui.yahooapis.com/3.3.0/build/cssfonts/fonts-min.css">
 
         <link rel="stylesheet" href="css/jquery-ui/jquery.ui.autocomplete.custom.css" />
-        <link rel="stylesheet" href="style.css"/>
+        <link rel="stylesheet" href="css/ui_weight_widget.css"/>
+        <link rel="stylesheet" href="css/style.css"/>
     </head>
     <body>
-        <div id="content">
-            <h2>Relative (V4)</h2>
-            <div id="relative_bars_4"></div>                
-            <a href="javascript:;" id="add_fruit_relative_4">Add fruit</a>
+        <a href="http://github.com/buger/skill_weight_ui"><img style="position: absolute; top: 0; right: 0; border: 0;" src="https://d3nwyuy0nl342s.cloudfront.net/img/7afbc8b248c68eb468279e8c17986ad46549fb71/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f6461726b626c75655f3132313632312e706e67" alt="Fork me on GitHub"></a>
 
-            <h2 style="margin-top: 100px;">Relative (V3)</h2>
-            <div id="relative_bars_3"></div>                
-            <a href="javascript:;" id="add_fruit_relative_3">Add fruit</a>
+        <div id="content"> 
+            <div class="description">
+                <h1>Different approaches for building budget allocation interface</h1>
+                <p>You can add your version if you want, just fork it on <a href="http://github.com/buger/skill_weight_ui">github</a></p>
+            </div>
 
-            <h2 style="margin-top: 100px;">Relative (V2)</h2>
-            <div id="relative_bars_2"></div>                
-            <a href="javascript:;" id="add_fruit_relative_2">Add fruit</a>
+            <h2>Standard</h2>
+            <div id="totals_container"></div>                            
+            <a href="javascript:;" id="add_skill_totals">Add skill</a>
 
             <h2 style="margin-top: 100px;">Relative</h2>
-            <div id="relative_bars"></div>                
-            <a href="javascript:;" id="add_fruit_relative">Add fruit</a>
+            <div id="relative_container"></div>                
+            <a href="javascript:;" id="add_skill_relative">Add skill</a>
 
-            <h2 style="margin-top: 100px;">Standard</h2>
-            <div id="bars"></div>                            
-            <a href="javascript:;" id="add_fruit">Add fruit</a>
+            <h2 style="margin-top: 100px;">Relative (V2)</h2>
+            <div id="relative2_container"></div>                
+            <a href="javascript:;" id="add_skill_relative2">Add skill</a>
+
+            <h2 style="margin-top: 100px;">Relative (V3)</h2>
+            <div id="relative3_container"></div>                
+            <a href="javascript:;" id="add_skill_relative3">Add skill</a>
+
+            <h2 style="margin-top: 100px;">Relative (V4)</h2>
+            <div id="relative4_container"></div>                
+            <a href="javascript:;" id="add_skill_relative4">Add skill</a>
             
             <div>
                 <iframe src="https://spreadsheets.google.com/embeddedform?formkey=dHFnZ0xYWXBOS3N5N1QzU2xCWFc0NkE6MQ" width="500" height="550" frameborder="0" marginheight="0" marginwidth="0" style="margin-top: 100px;">Loading...</iframe>            
-            </div>
+            </div>            
         </div>
         
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
         <script src="js/jquery-ui/jquery-ui.core-and-interactions.min.js"></script>
         <script src="js/jquery-ui/jquery-ui.autocomplete.min.js"></script>
-        <script src="js/autogrow.js"></script>
-        <script src="js/store.min.js"></script>
+        <script src="js/ui_weight_widget.js"></script>
         <script src="js/skills.js"></script>
         <script src="js/application.js?2"></script>
 
         <script>
-            var r = new UIWeightElement("relative_bars", "relative")
-                        .addBar('Cherries', 100)
-                        .addBar('Apples', 50)
-                        .addBar('Grapes', 30);
+            var widgets = ["relative", "relative2", "relative3", "relative4", "totals"];
 
-            $('#add_fruit_relative').bind('click', function(){
-                var fruit;
-                if (fruit = prompt('Enter fruit name')) {
-                    r.addBar(fruit, 10);
-                }
-            });
+            for(var i=0; i<widgets.length; i++) {
+                (function(){
+                    var widget = new UIWeightElement(widgets[i]+"_container", widgets[i]);
+                    
+                    for (var j=0; j<Math.floor(Math.random()*4)+2; j++) {
+                        widget.addBar(skills[Math.floor(Math.random()*skills.length)], Math.floor(Math.random()*20+10));
+                    }
 
-            var r2 = new UIWeightElement("relative_bars_2", "relative2")
-                        .addBar('Cherries', 100)
-                        .addBar('Apples', 50)
-                        .addBar('Grapes', 30);
+                    $('#add_skill_' + widgets[i]).bind('click', function(){
+                        widget.addBar("", 10);
+                        var label = widget.container.find('.label:last');
 
-            $('#add_fruit_relative_2').bind('click', function(){
-                var fruit;
-                if (fruit = prompt('Enter fruit name')) {
-                    r2.addBar(fruit, 10);
-                }
-            });
-
-            var r3 = new UIWeightElement("relative_bars_3", "relative3")
-                        .addBar('Cherries', 100)
-                        .addBar('Apples', 50)
-                        .addBar('Grapes', 30);
-
-            $('#add_fruit_relative_3').bind('click', function(){
-                var widget = r3.addBar("", 10);                
-                var label = widget.container.find('.label:last');
-
-                setTimeout(function(){
-                    UIWeightElement.editLabel(label);
-                    label.click();
-                });
-            });
-
-            var r4 = new UIWeightElement("relative_bars_4", "relative4")
-                        .addBar('Cherries', 100)
-                        .addBar('Apples', 50)
-                        .addBar('Grapes', 30);
-
-            $('#add_fruit_relative_4').bind('click', function(){
-                var fruit;
-                if (fruit = prompt('Enter fruit name')) {
-                    r4.addBar(fruit, 10);
-                }
-            });
-
-
-
-            var t = new UIWeightElement("bars", "totals")
-                        .addBar('Cherries', 60)
-                        .addBar('Apples', 40)
-                        .addBar('Grapes', 30);
-
-            $('#add_fruit').bind('click', function(){
-                var fruit;
-                if (fruit = prompt('Enter fruit name')) {
-                    t.addBar(fruit, 10);
-                }
-            });
+                        setTimeout(function(){
+                            UIWeightElement.editLabel(label);
+                            label.click();
+                        });
+                    });
+                })()
+            }
         </script>
 
         <!-- Yandex.Metrika counter -->
