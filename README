@@ -1,5 +1,6 @@
 Inspired by http://ux.stackexchange.com/questions/3736/how-to-build-a-budgeting-interface-sum-of-items-must-equal-100
 
+
 Example:
     <div id="widget_container"></div>    
     <script>
